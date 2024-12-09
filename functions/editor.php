@@ -212,7 +212,7 @@ class CropPostThumbnailsEditor {
 			'printRatio' => ($orig_img[1]/$orig_ima_gcd).':'.($orig_img[2]/$orig_ima_gcd),
 			'image_size' => $imageSize
 		];
-		return $result;
+		return apply_filters('crop_thumbnails_uncropped_image_data', $result);
 	}
 
 	protected function calculateRatioData($width,$height) {
