@@ -1,0 +1,11 @@
+{
+  "name": "johnshopkins/crop-thumbnails",
+  "type": "wordpress-plugin",
+  "version": "1.9.5.1",
+  "extra": {
+    "installer-name": "crop-thumbnails"
+  },
+  "require": {
+    "composer/installers": "~1.0"
+  }
+}

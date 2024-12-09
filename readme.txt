@@ -117,7 +117,7 @@ If you fork and planning to publish the forked plugin, please contact me.
 
 == Screenshots ==
 
-1. You have access to the crop-editor on the media-panel by clicking "Crop Featured Image".
+1. You have access to the crop-editor on the media-panel by clicking "Customize image crops".
 2. Choose one or more images (with the same ratio).
 3. The crop-editor is also integrated in the list-view of the media library.
 4. Choose what image-sizes should be hidden (for what post-types), for better usability.
