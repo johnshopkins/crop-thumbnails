@@ -74,7 +74,6 @@ class CropPostThumbnailsBackendPreparer {
 			|| $pagenow === 'upload.php'
 			|| !empty($options['include_js_on_all_admin_pages'])
 			);
-		$result = apply_filters('crop_thumbnails_activat_on_adminpages', $result);//leagacy filter with typo error
 		$result = apply_filters('crop_thumbnails_activate_on_adminpages', $result);
 		return $result;
 	}
@@ -94,7 +93,8 @@ class CropPostThumbnailsBackendPreparer {
 	public function adminHeaderJS() {
 		if($this->shouldCropThumbnailsBeActive()) {
 			if(function_exists('wp_enqueue_script_module')) {
-				wp_enqueue_script_module( 'cpt_crop_editor', plugins_url('app/main.js', __DIR__), ['imagesloaded', 'wp-api'], CROP_THUMBNAILS_VERSION);
+				wp_enqueue_script_module( 'cpt_crop_editor', plugins_url('app/main.js', __DIR__), [], CROP_THUMBNAILS_VERSION);
+				wp_enqueue_script('imagesloaded');
 				wp_enqueue_script('wp-api');
 			} else {
 				wp_enqueue_script( 'cpt_crop_editor', plugins_url('app/main.js', __DIR__), ['imagesloaded', 'wp-api'], CROP_THUMBNAILS_VERSION);
@@ -115,13 +115,12 @@ class CropPostThumbnailsBackendPreparer {
 
 		if(in_array($post->post_mime_type,$this->allowedMime)) {
 			$html = '';
-			$html.= '<a class="button cropThumbnailsLink" href="#" data-cropthumbnail=\'{"image_id":'.$post->ID.',"viewmode":"single"}\' title="'.esc_attr__('Customize image crops','crop-thumbnails').'">';
-			$html.= '<span class="wp-media-buttons-icon"></span> '.esc_html__('Customize image crops','crop-thumbnails');
+			$html.= '<a class="button cropThumbnailsLink" href="#" data-cropthumbnail=\'{"image_id":'.$post->ID.',"viewmode":"single"}\' title="'.esc_attr__('Crop Featured Image','crop-thumbnails').'">';
+			$html.= '<span class="wp-media-buttons-icon"></span> '.esc_html__('Crop Featured Image','crop-thumbnails');
 			$html.= '</a>';
-			$html .= '<p>To change the automated crops that WordPress creates, click the link and follow the instructions.</p>';
 
 			$form_fields['cropthumbnails'] = [
-				'label' => 'Crop thumbnails',
+				'label' => '&nbsp;',
 				'input' => 'html',
 				'html' => $html
 			];
@@ -170,8 +169,8 @@ jQuery(function($) {
 
 		let featuredImageLinkButton = '';
 		featuredImageLinkButton+= '<p class="cropFeaturedImageWrap hidden">';
-		featuredImageLinkButton+= '<a class="button cropThumbnailsLink" href="#" data-cropthumbnail=\'{"image_id":'+ parseInt(wp.media.featuredImage.get()) +',"viewmode":"single","posttype":"<?php echo get_post_type(); ?>"}\' title="<?php esc_attr_e('Customize image crops','crop-thumbnails') ?>">';
-		featuredImageLinkButton+= '<span class="wp-media-buttons-icon"></span> <?php esc_html_e('Customize image crops','crop-thumbnails'); ?>';
+		featuredImageLinkButton+= '<a class="button cropThumbnailsLink" href="#" data-cropthumbnail=\'{"image_id":'+ parseInt(wp.media.featuredImage.get()) +',"viewmode":"single","posttype":"<?php echo get_post_type(); ?>"}\' title="<?php esc_attr_e('Crop Featured Image','crop-thumbnails') ?>">';
+		featuredImageLinkButton+= '<span class="wp-media-buttons-icon"></span> <?php esc_html_e('Crop Featured Image','crop-thumbnails'); ?>';
 		featuredImageLinkButton+= '</a>';
 		featuredImageLinkButton+= '</p>';
 		baseElem.find('.inside').after( $(featuredImageLinkButton) );
@@ -217,7 +216,7 @@ jQuery(function($) {
 			return function( props ) {
 				setTimeout(function() {
 					var baseElem = $('.edit-post-sidebar');
-					var cropButton = $('<button class="button cropThumbnailsLink" style="margin-top:1em" data-cropthumbnail=\'{"image_id":'+ parseInt(props.featuredImageId) +',"viewmode":"single","posttype":"<?php echo get_post_type(); ?>"}\' title="<?php esc_attr_e('Customize image crops','crop-thumbnails') ?>"><span class="wp-media-buttons-icon"></span> <?php esc_html_e('Customize image crops','crop-thumbnails'); ?></button>');
+					var cropButton = $('<button class="button cropThumbnailsLink" style="margin-top:1em" data-cropthumbnail=\'{"image_id":'+ parseInt(props.featuredImageId) +',"viewmode":"single","posttype":"<?php echo get_post_type(); ?>"}\' title="<?php esc_attr_e('Crop Featured Image','crop-thumbnails') ?>"><span class="wp-media-buttons-icon"></span> <?php esc_html_e('Crop Featured Image','crop-thumbnails'); ?></button>');
 					if(typeof props.media !== 'undefined') {
 						var panel = baseElem.find('.editor-post-featured-image');
 						panel.find('.cropThumbnailsLink').remove();
@@ -279,8 +278,8 @@ jQuery(function($) {
 
 				var buttonContent = '';
 				buttonContent+= '<span class="cropThumbnailsLinkWrap">';
-				buttonContent+= '<a class="cropThumbnailsLink" href="#" data-cropthumbnail=\'{"image_id":'+ post_id +',"viewmode":"single"}\' title="<?php esc_attr_e('Customize image crops','crop-thumbnails') ?>">';
-				buttonContent+= '<span class="wp-media-buttons-icon"></span> <?php esc_html_e('Customize image crops','crop-thumbnails'); ?>';
+				buttonContent+= '<a class="cropThumbnailsLink" href="#" data-cropthumbnail=\'{"image_id":'+ post_id +',"viewmode":"single"}\' title="<?php esc_attr_e('Crop Featured Image','crop-thumbnails') ?>">';
+				buttonContent+= '<span class="wp-media-buttons-icon"></span> <?php esc_html_e('Crop Featured Image','crop-thumbnails'); ?>';
 				buttonContent+= '</a>';
 				buttonContent+= '</span>';
 
